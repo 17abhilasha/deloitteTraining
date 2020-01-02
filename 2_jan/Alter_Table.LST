@@ -1,0 +1,173 @@
+SQL> alter table employees
+  2  modify(last_name  VARCHAR(60));
+
+Table altered.
+
+SQL> desc employees;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                               NOT NULL NUMBER(6)
+ FIRST_NAME                                         VARCHAR2(20)
+ LAST_NAME                                 NOT NULL VARCHAR2(60)
+ EMAIL                                     NOT NULL VARCHAR2(25)
+ PHONE_NUMBER                                       VARCHAR2(20)
+ HIRE_DATE                                 NOT NULL DATE
+ JOB_ID                                    NOT NULL VARCHAR2(10)
+ SALARY                                             NUMBER(8,2)
+ COMMISSION_PCT                                     NUMBER(2,2)
+ MANAGER_ID                                         NUMBER(6)
+ DEPARTMENT_ID                                      NUMBER(4)
+
+SQL> create table employees2
+  2  as select employee_id, first_name, last_name, salary , department_id from employees;
+create table employees2
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> create table employee2
+  2  as select employee_id, first_name, last_name, salary , department_id from employees;
+
+Table created.
+
+SQL> desc employee2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                                        NUMBER(6)
+ FIRST_NAME                                         VARCHAR2(20)
+ LAST_NAME                                 NOT NULL VARCHAR2(60)
+ SALARY                                             NUMBER(8,2)
+ DEPARTMENT_ID                                      NUMBER(4)
+
+SQL> create table employees2
+  2  as select employee_id, first_name, last_name, salary , department_id from employees;
+
+Table created.
+
+SQL> desc employees2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                                        NUMBER(6)
+ FIRST_NAME                                         VARCHAR2(20)
+ LAST_NAME                                 NOT NULL VARCHAR2(60)
+ SALARY                                             NUMBER(8,2)
+ DEPARTMENT_ID                                      NUMBER(4)
+
+SQL> drop table employees;
+drop table employees
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys 
+
+
+SQL> drop table emp_tab;
+drop table emp_tab
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> remane table employee2 as emp_tab;
+SP2-0734: unknown command beginning "remane tab..." - rest of line ignored.
+SQL> remane  employees2 as emp_tab;
+SP2-0734: unknown command beginning "remane  em..." - rest of line ignored.
+SQL> remane  employees2 to emp_tab;
+SP2-0734: unknown command beginning "remane  em..." - rest of line ignored.
+SQL> remane table employees2 to emp_tab;
+SP2-0734: unknown command beginning "remane tab..." - rest of line ignored.
+SP2-0044: For a list of known commands enter HELP
+and to leave enter EXIT.
+SQL> rename employees2 to emp_tab;
+
+Table renamed.
+
+SQL> drop emp_tab;
+drop emp_tab
+     *
+ERROR at line 1:
+ORA-00950: invalid DROP option 
+
+
+SQL> drop table emp_tab;
+
+Table dropped.
+
+SQL> alter table employees
+  2   drop column first_name ;
+ drop column first_name 
+             *
+ERROR at line 2:
+ORA-00904: "FIRST_NAME": invalid identifier 
+
+
+SQL> comment on table employees is 'Employee Information';
+
+Comment created.
+
+SQL>  comment on table departments is 'Department Information';
+
+Comment created.
+
+SQL> alter table employees
+  2   drop column first_name ;
+ drop column first_name 
+             *
+ERROR at line 2:
+ORA-00904: "FIRST_NAME": invalid identifier 
+
+
+SQL> alter table
+  2  employees
+  3  set unused(department_id);
+
+Table altered.
+
+SQL> desc employees;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                               NOT NULL NUMBER(6)
+ LAST_NAME                                 NOT NULL VARCHAR2(60)
+ EMAIL                                     NOT NULL VARCHAR2(25)
+ PHONE_NUMBER                                       VARCHAR2(20)
+ HIRE_DATE                                 NOT NULL DATE
+ JOB_ID                                    NOT NULL VARCHAR2(10)
+ SALARY                                             NUMBER(8,2)
+ COMMISSION_PCT                                     NUMBER(2,2)
+ MANAGER_ID                                         NUMBER(6)
+
+SQL> alter table employees
+  2  drop unsed coloumns;
+drop unsed coloumns
+     *
+ERROR at line 2:
+ORA-00905: missing keyword 
+
+
+SQL> alter table employees
+  2  drop unused coloumns;
+drop unused coloumns
+            *
+ERROR at line 2:
+ORA-02000: missing COLUMNS keyword 
+
+
+SQL> alter table employees
+  2  drop unused columns;
+
+Table altered.
+
+SQL> desc employees;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                               NOT NULL NUMBER(6)
+ LAST_NAME                                 NOT NULL VARCHAR2(60)
+ EMAIL                                     NOT NULL VARCHAR2(25)
+ PHONE_NUMBER                                       VARCHAR2(20)
+ HIRE_DATE                                 NOT NULL DATE
+ JOB_ID                                    NOT NULL VARCHAR2(10)
+ SALARY                                             NUMBER(8,2)
+ COMMISSION_PCT                                     NUMBER(2,2)
+ MANAGER_ID                                         NUMBER(6)
+
+SQL> spool off;
