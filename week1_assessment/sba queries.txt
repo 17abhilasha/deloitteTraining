@@ -1,0 +1,790 @@
+--
+Question 1
+
+
+//  table sailor
+
+create table sailor
+(S_id int primary key,
+ Sname varchar(20) ,
+ Rating int unique, 
+ age NUMBER);
+ desc sailor;
+
+ 
+insert into Sailor
+ values(22, 'Dustin', 7 , 45.0);
+ insert into Sailor
+ values(29, 'Brutus', 1, 33.0);
+ insert into Sailor
+ values(31, 'Lubber', 9 , 55);
+ insert into Sailor
+ values(32, 'Andy', 8 , 25.0);
+ insert into Sailor
+ values(58, 'Rusty', 10 , 35);
+
+//table boats
+create table boats
+   (Bid int primary key,
+   Bname varchar(20),
+   Color varchar(10));
+ 
+ insert into boats
+ values(101,'Interlake','Blue');
+ insert into boats
+ values(102,'Interlake','Red');
+ insert into boats
+ values(103,'Chapper','Green');
+ insert into boats
+ values(104,'Marine','Red');
+
+//table reserves
+  create table reserves
+   (S_id int  REFERENCES Sailor(S_id),
+   Bid int   REFERENCES boats(Bid) , 
+   D_ay date);
+
+
+insert into reserves
+   values( 22,101,'1-1-2004');
+   insert into reserves
+   values( 22,102,'1-1-2004');
+   insert into reserves
+   values( 22,103,'1-2-2004');
+   insert into reserves
+   values( 22,103,'1-2-2004');
+   insert into reserves
+   values( 32,104,'7-4-2005');
+
+Query 1.)
+ select Sname from sailor where s_id in (select s_id from reserves);
+
+Query 2.)
+ select sname from sailor where s_id in (select s_id from reserves where bid<>0 );
+
+Query 3.)
+ select age from sailor where sname like 'B%'  and  length(sname)>3;
+
+Query 4.)     
+ select distinct s.sname from sailor  s  , reserves r  , boats b
+  where s.s_id = r.s_id and b.color in ('Red','Green') ;
+
+
+
+Question 3:-
+
+ create or replace trigger t_res
+  before insert or update or delete on reserves
+  begin
+      if to_char (sysdate,'Day')='Monday' or to_char(sysdate, 'Day')='Friday'
+       then
+      raise_application_error(-20111,'can not alter table on monday and friday');
+      end if;
+      end;
+   /
+
+Trigger created.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ desc sailor;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ SNAME                                              VARCHAR2(20)
+ RATING                                             NUMBER(38)
+ AGE                                                NUMBER
+
+SQL> desc boats;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BID                                       NOT NULL NUMBER(38)
+ BNAME                                              VARCHAR2(20)
+ COLOR                                              VARCHAR2(10)
+
+SQL> desc reserves;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                               NUMBER(38)
+ BID                                                NUMBER(38)
+ D_AY                                               DATE
+
+SQL> select Sname from sailor where s_id in (select s_id from reserves);
+
+SNAME
+--------------------
+Dustin
+Andy
+
+SQL> select sname from sailor where s_id in (select s_id from reserves where bid<>0 );
+
+SNAME
+--------------------
+Dustin
+Andy
+
+SQL>  select age from sailor where sname like 'B%'  and  length(sname)>3;
+
+       AGE
+----------
+        33
+
+SQL>   select distinct s.sname from sailor  s  , reserves r  , boats b
+  2     where s.s_id = r.s_id and b.color in ('Red','Green') ;
+
+SNAME
+--------------------
+Andy
+Dustin
+
+SQL>   select distinct s.sname from sailor  s  , reserves r  , boats b
+  2     where s.s_id = r.s_id and b.color in ('Red','Green') ;
+
+SNAME
+--------------------
+Andy
+Dustin
+
+SQL>   create or replace trigger t_res
+  2     before insert or update or delete on reserves
+  3     begin
+  4     if to_char (sysdate,'Day')='Monday' or to_char(sysdate, 'Day')='Friday'
+  5     then
+  6     raise_application_error(-20111,'can not alter table on monday and friday');
+  7     end if;
+  8     end;
+  9
+ 10
+ 11  /
+
+Trigger created.
+
+SQL> spool off;
+SQL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ desc sailor;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ SNAME                                              VARCHAR2(20)
+ RATING                                             NUMBER(38)
+ AGE                                                NUMBER
+
+SQL> desc boats;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BID                                       NOT NULL NUMBER(38)
+ BNAME                                              VARCHAR2(20)
+ COLOR                                              VARCHAR2(10)
+
+SQL> desc reserves;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                               NUMBER(38)
+ BID                                                NUMBER(38)
+ D_AY                                               DATE
+
+SQL> select Sname from sailor where s_id in (select s_id from reserves);
+
+SNAME
+--------------------
+Dustin
+Andy
+
+SQL> select sname from sailor where s_id in (select s_id from reserves where bid<>0 );
+
+SNAME
+--------------------
+Dustin
+Andy
+
+SQL>  select age from sailor where sname like 'B%'  and  length(sname)>3;
+
+       AGE
+----------
+        33
+
+SQL>   select distinct s.sname from sailor  s  , reserves r  , boats b
+  2     where s.s_id = r.s_id and b.color in ('Red','Green') ;
+
+SNAME
+--------------------
+Andy
+Dustin
+
+SQL>   select distinct s.sname from sailor  s  , reserves r  , boats b
+  2     where s.s_id = r.s_id and b.color in ('Red','Green') ;
+
+SNAME
+--------------------
+Andy
+Dustin
+
+SQL>   create or replace trigger t_res
+  2     before insert or update or delete on reserves
+  3     begin
+  4     if to_char (sysdate,'Day')='Monday' or to_char(sysdate, 'Day')='Friday'
+  5     then
+  6     raise_application_error(-20111,'can not alter table on monday and friday');
+  7     end if;
+  8     end;
+  9
+ 10
+ 11  /
+
+Trigger created.
+
+SQL> spool off;
+SQL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ desc sailor;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                      NOT NULL NUMBER(38)
+ SNAME                                              VARCHAR2(20)
+ RATING                                             NUMBER(38)
+ AGE                                                NUMBER
+
+SQL> desc boats;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BID                                       NOT NULL NUMBER(38)
+ BNAME                                              VARCHAR2(20)
+ COLOR                                              VARCHAR2(10)
+
+SQL> desc reserves;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ S_ID                                               NUMBER(38)
+ BID                                                NUMBER(38)
+ D_AY                                               DATE
+
+SQL> select Sname from sailor where s_id in (select s_id from reserves);
+
+SNAME
+--------------------
+Dustin
+Andy
+
+SQL> select sname from sailor where s_id in (select s_id from reserves where bid<>0 );
+
+SNAME
+--------------------
+Dustin
+Andy
+
+SQL>  select age from sailor where sname like 'B%'  and  length(sname)>3;
+
+       AGE
+----------
+        33
+
+SQL>   select distinct s.sname from sailor  s  , reserves r  , boats b
+  2     where s.s_id = r.s_id and b.color in ('Red','Green') ;
+
+SNAME
+--------------------
+Andy
+Dustin
+
+SQL>   select distinct s.sname from sailor  s  , reserves r  , boats b
+  2     where s.s_id = r.s_id and b.color in ('Red','Green') ;
+
+SNAME
+--------------------
+Andy
+Dustin
+
+SQL>   create or replace trigger t_res
+  2     before insert or update or delete on reserves
+  3     begin
+  4     if to_char (sysdate,'Day')='Monday' or to_char(sysdate, 'Day')='Friday'
+  5     then
+  6     raise_application_error(-20111,'can not alter table on monday and friday');
+  7     end if;
+  8     end;
+  9
+ 10
+ 11  /
+
+Trigger created.
+
+SQL> spool off;
+SQL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
